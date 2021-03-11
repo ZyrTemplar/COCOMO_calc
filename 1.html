@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>COCOMO calc</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<header>
+		<span class="logo">COCOMO</span>
+	</header>
+
+	<div class="zxc">
+	Рівень проекту
+			<select id="riven">
+				<option id="Basic">Базовий</option>
+				<option id="Intermediate">Проміжний</option>
+			</select>
+	</div>
+
+	<div class="input">
+		<span>
+			Тип проекту
+			<select id="select">
+				<option id="Widespread">Розповсюджений</option>
+				<option id="SemiIndependent">Напівнезалежний</option>
+				<option id="BuiltIn">Вбудований</option>
+			</select>
+		</span>
+		<span>
+			Кількість рядків коду
+			<input type="number" size="5" id="linesOfCode">
+		</span>
+	</div>
+
+	<div class="output">
+		<table>
+			<tr>
+				<th><h1 id="LaborIntensity">0.00</h1></th>
+				<th><h1 id="DevelopmentTime">0.00</h1></th>
+			</tr>
+			<tr>
+				<th>Трудоємність</th>
+				<th>Час розробки</th>
+			</tr>
+		</table>
+	</div>
+	<!-- Login -->
+	<div class="modal-wrap hide" id="sign-in">
+		<div class="login-box">
+			<button class="modal-close"><i class="fa fa-times"></i></button>
+			<h1>Вхід</h1>
+			<div class="textbox">
+				<i class="fa fa-user" aria-hidden="true"></i>
+				<input type="text" placeholder="Ім'я">
+			</div>
+
+			<div class="textbox">
+				<i class="fa fa-lock" aria-hidden="true"></i>
+				<input type="password" placeholder="Пароль">
+			</div>
+
+			<input class="btn" type="button" value="Увійти">
+		</div>
+	</div>
+	<!-- Login -->
+<script>
+	//modal111111111111111111111111111111111111111111111111
+	document.querySelectorAll(".modal-show").forEach(function(element){
+		element.onclick = showModal;
+	})
+
+	function showModal(){
+	let modalId = this.dataset.modal;
+	document.querySelector(modalId).classList.remove("hide");
+
+	document.onkeydown = function(e){
+		if(e.key == "Escape"){
+			document.querySelectorAll(".modal-wrap").forEach(function(element){
+				element.classList.add("hide");
+				document.onkeydown = null	
+			})
+		}
+	}
+	}
+
+	document.querySelector(".modal-close").onclick = function(element){
+		document.querySelector(".modal-wrap").classList.add("hide");	
+	}
+	//modal111111111111111111111111111111111111111111111111
+	const aiWidespread = 2.4
+	const biWidespread = 1.05
+	const ciWidespread = 2.5
+	const diWidespread = 0.38
+
+	const aiSemiIndependent = 3.0 
+	const biSemiIndependent = 1.12
+	const ciSemiIndependent = 2.5
+	const diSemiIndependent = 0.35
+
+	const aiBuiltIn = 3.6
+	const biBuiltIn = 1.20
+	const ciBuiltIn = 2.5
+	const diBuiltIn = 0.32
+
+	size = 0
+
+	Widespread = document.getElementById("Widespread")
+	SemiIndependent = document.getElementById("SemiIndependent")
+	BuiltIn = document.getElementById("BuiltIn")
+
+	LI = document.getElementById("LaborIntensity")
+	DT = document.getElementById("DevelopmentTime")
+
+	function calculate(){
+		if (Widespread.selected){
+	    	PM = aiWidespread * Math.pow(size, biWidespread)
+			TM = ciWidespread * Math.pow(PM, diWidespread)
+	    }
+		else if (SemiIndependent.selected){
+			PM = aiSemiIndependent * Math.pow(size, biSemiIndependent)
+			TM = ciSemiIndependent * Math.pow(PM, diSemiIndependent)
+		}
+		else if (BuiltIn.selected){
+			PM = aiBuiltIn * Math.pow(size, biBuiltIn)
+			TM = ciBuiltIn * Math.pow(PM, diBuiltIn)
+		}
+		LI.innerHTML = PM.toFixed(2)
+		DT.innerHTML = TM.toFixed(2) 
+	}
+
+	sizeCheck = document.getElementById("linesOfCode")
+	sizeCheck.oninput = function() {
+	    size = parseInt(sizeCheck.value)
+	    if (!Number.isInteger(size)) size = 0
+	    calculate()
+  	}
+
+  	selectClass = document.getElementById("select")
+	selectClass.addEventListener("change", (event) =>{
+			calculate()
+		})
+
+	function selec(){
+	document.getElementById("Basic").selected = true
+}
+
+riven = document.getElementById("riven")
+riven.addEventListener("change", (event) =>{
+			if(document.getElementById("Basic").selected) document.location.href = "1.html"
+			else document.location.href = "2.html"
+		})
+
+</script>
+</body>
+</html>
